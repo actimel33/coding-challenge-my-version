@@ -14,11 +14,14 @@ git clone https://github.com/actimel33/coding-challenge-my-version.git
 Second, run the development server:
 
 ```bash
-npm run dev
+npm run build
+npm run start
 # or
-yarn dev
+yarn run build
+yarn run start
 # or
-pnpm dev
+pnpm build
+pnpm start
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
