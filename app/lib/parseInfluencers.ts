@@ -7,7 +7,7 @@ import { parseNumberWithSuffix } from './parseNumberWithSuffix';
 export const parseInfluencers = async () => {
   // Build file path
 
-  console.time();
+  // console.time();
   const publicDirectory = path.join(process.cwd(), 'public');
   const influencersFilePath = path.join(publicDirectory, 'instagram_influencers.csv');
 
@@ -31,7 +31,7 @@ export const parseInfluencers = async () => {
     record[engagementAvgKey] = parseNumberWithSuffix(record[engagementAvgKey]);
     results.push(record);
   }
-  console.timeEnd();
+  // console.timeEnd();
 
   return results;
 };

@@ -1,3 +1,4 @@
+import { sortBy, reverse } from 'lodash';
 import { NextApiRequest } from 'next';
 
 import { NextResponse } from 'next/server';
@@ -16,8 +17,15 @@ async function handler(req: NextApiRequest) {
   const topInfluencersAuthenticEngagement = 'Authentic engagement';
 
   const topInfluencers = {
-    topInfluencersByCategory: findTopInfluencers(fileContent, groupsByCategoryKey_1, topInfluencersFollowers),
-    topInfluencersByCountry: findTopInfluencers(fileContent, groupsByCategoryKey_2, topInfluencersAuthenticEngagement),
+    topInfluencersByCategory: reverse(
+      sortBy(findTopInfluencers(fileContent, groupsByCategoryKey_1, topInfluencersFollowers), topInfluencersFollowers),
+    ),
+    topInfluencersByCountry: reverse(
+      sortBy(
+        findTopInfluencers(fileContent, groupsByCategoryKey_2, topInfluencersAuthenticEngagement),
+        topInfluencersFollowers,
+      ),
+    ),
   };
 
   //Return the content of the data file in json format
