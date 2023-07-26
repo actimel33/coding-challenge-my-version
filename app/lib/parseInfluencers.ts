@@ -2,6 +2,8 @@ import { parse } from 'csv-parse';
 import fs from 'fs';
 import path from 'path';
 
+import { IInfluencer } from '@app/types.d';
+
 import { parseNumberWithSuffix } from './parseNumberWithSuffix';
 
 export const parseInfluencers = async () => {
