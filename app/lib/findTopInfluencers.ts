@@ -1,4 +1,4 @@
-import { groupBy, mapValues, maxBy, compact } from 'lodash';
+import { groupBy, mapValues, maxBy } from 'lodash';
 
 import { IInfluencer } from '@app/types';
 
