@@ -3,10 +3,14 @@ export interface IInfluencer {
   'instagram name': string;
   category_1: string;
   category_2: string;
-  Followers: number | string;
+  Followers: number;
   'Audience country(mostly)': string;
   'Authentic engagement': number;
   'Engagement avg': number;
+}
+
+export interface IInfluencerWithStringFollowers extends IInfluencer {
+  Followers: string;
 }
 
 export enum ETableTitle {

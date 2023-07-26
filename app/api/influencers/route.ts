@@ -1,46 +1,28 @@
-import { sortBy } from 'lodash';
-
 import { NextResponse } from 'next/server';
 
 import { IInfluencer } from '@app/types';
 import { findTopInfluencers } from '@lib/findTopInfluencers';
 import { parseInfluencers } from '@lib/parseInfluencers';
-import { stringifyNumberWithSuffix } from '@lib/stringNumberWithSuffix';
 
 async function handler() {
   // Read the csv file instagram_influencers.csv
-  const fileContent = await parseInfluencers();
+  const fileContent = (await parseInfluencers()) as unknown as IInfluencer[];
 
-  const groupsByCategoryKey_1: keyof IInfluencer = 'category_1';
   const topInfluencersFollowers: keyof IInfluencer = 'Followers';
+  const groupsByCategoryKey_1: keyof IInfluencer = 'category_1';
 
-  const groupsByCategoryKey_2: keyof IInfluencer = 'Audience country(mostly)';
-  const topInfluencersAuthenticEngagement: keyof IInfluencer = 'Authentic engagement';
+  const topInfluencersAuthenticEngagement: keyof IInfluencer = 'Engagement avg';
+  const groupsByAudienceKey_2: keyof IInfluencer = 'Audience country(mostly)';
 
-  const topInfluencersByCategory = (
-    sortBy(
-      findTopInfluencers(fileContent, groupsByCategoryKey_1, topInfluencersFollowers),
-      topInfluencersFollowers,
-    ).reverse() as unknown as IInfluencer[]
-  ).map(influencer => {
-    if (typeof influencer[topInfluencersFollowers] !== 'string') {
-      influencer[topInfluencersFollowers] = stringifyNumberWithSuffix(influencer[topInfluencersFollowers]);
-    }
-
-    return influencer;
+  const topInfluencersByCategory = findTopInfluencers({
+    influencers: fileContent,
+    groupByKey: topInfluencersFollowers,
+    topInfluencersByKey: groupsByCategoryKey_1,
   });
-
-  const topInfluencersByCountry = (
-    sortBy(
-      findTopInfluencers(fileContent, groupsByCategoryKey_2, topInfluencersAuthenticEngagement),
-      topInfluencersFollowers,
-    ).reverse() as unknown as IInfluencer[]
-  ).map(influencer => {
-    if (typeof influencer[topInfluencersFollowers] !== 'string') {
-      influencer[topInfluencersFollowers] = stringifyNumberWithSuffix(influencer[topInfluencersFollowers]);
-    }
-
-    return influencer;
+  const topInfluencersByCountry = findTopInfluencers({
+    influencers: fileContent,
+    groupByKey: topInfluencersAuthenticEngagement,
+    topInfluencersByKey: groupsByAudienceKey_2,
   });
 
   const topInfluencers = {

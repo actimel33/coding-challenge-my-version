@@ -1,5 +1,6 @@
-import { ETableTitle, IInfluencer } from '@app/types.d';
+import { ETableTitle, IInfluencer, IInfluencerWithStringFollowers } from '@app/types.d';
 import InfluencersTableRow from '@components/atoms/influencers-table-row';
+import { stringifyNumberWithSuffix } from '@lib/stringNumberWithSuffix';
 
 export default async function InfluencersTable({
   title,
@@ -8,6 +9,13 @@ export default async function InfluencersTable({
   title: ETableTitle;
   influencers: IInfluencer[];
 }) {
+  const mapedInfluencers: IInfluencerWithStringFollowers[] = influencers.map(influencer => {
+    return {
+      ...influencer,
+      Followers: stringifyNumberWithSuffix(influencer['Followers']),
+    };
+  });
+
   return (
     <table className="min-w-max w-full table-auto">
       <caption className="bg-gray-100 text-lg py-6 font-bold uppercase">{title}</caption>
@@ -24,7 +32,7 @@ export default async function InfluencersTable({
         </tr>
       </thead>
       <tbody className="text-gray-600 text-sm font-light">
-        {Object.values(influencers).map((item, index) => (
+        {Object.values(mapedInfluencers).map((item, index) => (
           <InfluencersTableRow key={`${item.Followers}_${index}`} influencer={item} />
         ))}
       </tbody>

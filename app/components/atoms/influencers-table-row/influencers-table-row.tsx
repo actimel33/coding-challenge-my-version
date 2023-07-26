@@ -1,4 +1,4 @@
-import { IInfluencer } from '@app/types.d';
+import { IInfluencerWithStringFollowers } from '@app/types.d';
 import InfluencersTableCell from '@components/atoms/influencers-table-cell';
 import { fetchInfluencers } from '@lib/fetchInfluencers';
 
@@ -10,7 +10,7 @@ export async function generateStaticParams() {
   return Object.values({ ...topInfluencersByCategory, ...topInfluencersByCountry });
 }
 
-export default async function InfluencersTableRow({ influencer }: { influencer: IInfluencer }) {
+export default async function InfluencersTableRow({ influencer }: { influencer: IInfluencerWithStringFollowers }) {
   const values = Object.values(influencer);
 
   return (

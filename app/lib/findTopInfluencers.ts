@@ -1,15 +1,35 @@
-import { groupBy, mapValues, maxBy } from 'lodash';
-
 import { IInfluencer } from '@app/types';
 
-export const findTopInfluencers = (
-  records: string[],
-  groupByKey: keyof IInfluencer,
-  topInfluencersByKey: keyof IInfluencer,
-) => {
-  // Group records by category and find the top influencer in each category by followers
-  const groupsByCategory = groupBy(records, groupByKey);
-  const topInfluencers = mapValues(groupsByCategory, influencers => maxBy(influencers, topInfluencersByKey));
+export function findTopInfluencers({
+  influencers,
+  groupByKey,
+  topInfluencersByKey,
+  limit = Infinity,
+}: {
+  influencers: IInfluencer[];
+  groupByKey: keyof IInfluencer;
+  topInfluencersByKey: keyof IInfluencer;
+  limit?: number;
+}) {
+  let result: IInfluencer[] = [];
+  if (groupByKey === 'Followers') {
+    result = influencers
+      .filter(influencer => typeof influencer[groupByKey] === 'number')
+      .sort((a, b) => +b[groupByKey] - +a[groupByKey])
+      .filter(
+        (influencer, index, self) =>
+          index === self.findIndex((i: IInfluencer) => i[topInfluencersByKey] === influencer[topInfluencersByKey]),
+      )
+      .slice(0, limit);
+  } else {
+    result = influencers
+      .sort((a, b) => +b[groupByKey] - +a[groupByKey])
+      .filter(
+        (influencer, index, self) =>
+          index === self.findIndex((i: IInfluencer) => i[topInfluencersByKey] === influencer[topInfluencersByKey]),
+      )
+      .slice(0, limit);
+  }
 
-  return topInfluencers || [];
-};
+  return result;
+}
