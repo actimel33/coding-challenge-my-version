@@ -1,12 +1,11 @@
 import { sortBy, reverse } from 'lodash';
-import { NextApiRequest } from 'next';
 
 import { NextResponse } from 'next/server';
 
 import { findTopInfluencers } from '@lib/findTopInfluencers';
 import { parseInfluencers } from '@lib/parseInfluencers';
 
-async function handler(req: NextApiRequest) {
+async function handler() {
   // Read the csv file instagram_influencers.csv
   const fileContent = await parseInfluencers();
 
